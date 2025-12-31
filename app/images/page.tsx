@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { ArrowLeft, Upload, FolderPlus, Share2, Folder, Image as ImageIcon, X } from "lucide-react";
+import { ArrowLeft, Upload, FolderPlus, Share2, Folder, Image as ImageIcon, X, Trash2 } from "lucide-react";
 
 interface ImageItem {
   id: string;
@@ -103,6 +103,15 @@ export default function ImagesPage() {
     setTimeout(() => setShareModal(null), 2000);
   };
 
+  const deleteItem = (id: string) => {
+    setItems(prev => prev.filter(item => item.id !== id));
+  };
+
+  const deleteFolder = (id: string) => {
+    setFolders(prev => prev.filter(folder => folder.id !== id));
+    setItems(prev => prev.filter(item => item.folderId !== id));
+  };
+
   return (
     <div className="min-h-screen p-8">
       <div className="max-w-7xl mx-auto">
@@ -161,15 +170,26 @@ export default function ImagesPage() {
                   <p className="text-center text-sm font-medium text-turquoise-800 truncate">
                     {folder.name}
                   </p>
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleShare("folder", folder.id);
-                    }}
-                    className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 p-1 bg-white rounded hover:bg-turquoise-50 transition-opacity"
-                  >
-                    <Share2 className="w-4 h-4 text-turquoise-600" />
-                  </button>
+                  <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleShare("folder", folder.id);
+                      }}
+                      className="p-1 bg-white rounded hover:bg-turquoise-50"
+                    >
+                      <Share2 className="w-4 h-4 text-turquoise-600" />
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        deleteFolder(folder.id);
+                      }}
+                      className="p-1 bg-white rounded hover:bg-red-50"
+                    >
+                      <Trash2 className="w-4 h-4 text-red-500" />
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>
@@ -193,6 +213,12 @@ export default function ImagesPage() {
                       className="opacity-0 group-hover:opacity-100 bg-white rounded-full p-2 hover:bg-turquoise-50 transition-opacity"
                     >
                       <Share2 className="w-5 h-5 text-turquoise-600" />
+                    </button>
+                    <button
+                      onClick={() => deleteItem(item.id)}
+                      className="opacity-0 group-hover:opacity-100 bg-white rounded-full p-2 hover:bg-red-50 transition-opacity"
+                    >
+                      <Trash2 className="w-5 h-5 text-red-500" />
                     </button>
                   </div>
                 </div>

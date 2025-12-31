@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { ArrowLeft, Plus, FolderPlus, Share2, Folder, Film, X, Star } from "lucide-react";
+import { ArrowLeft, Plus, FolderPlus, Share2, Folder, Film, X, Star, Trash2 } from "lucide-react";
 
 interface MovieItem {
   id: string;
@@ -98,6 +98,15 @@ export default function MoviesPage() {
     setTimeout(() => setShareModal(null), 2000);
   };
 
+  const deleteItem = (id: string) => {
+    setItems(prev => prev.filter(item => item.id !== id));
+  };
+
+  const deleteFolder = (id: string) => {
+    setFolders(prev => prev.filter(folder => folder.id !== id));
+    setItems(prev => prev.filter(item => item.folderId !== id));
+  };
+
   const renderStars = (rating: number) => {
     return (
       <div className="flex gap-1">
@@ -165,15 +174,26 @@ export default function MoviesPage() {
                   <p className="text-center text-sm font-medium text-turquoise-800 truncate">
                     {folder.name}
                   </p>
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleShare("folder", folder.id);
-                    }}
-                    className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 p-1 bg-white rounded hover:bg-turquoise-50 transition-opacity"
-                  >
-                    <Share2 className="w-4 h-4 text-turquoise-600" />
-                  </button>
+                  <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleShare("folder", folder.id);
+                      }}
+                      className="p-1 bg-white rounded hover:bg-turquoise-50"
+                    >
+                      <Share2 className="w-4 h-4 text-turquoise-600" />
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        deleteFolder(folder.id);
+                      }}
+                      className="p-1 bg-white rounded hover:bg-red-50"
+                    >
+                      <Trash2 className="w-4 h-4 text-red-500" />
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>
@@ -206,12 +226,20 @@ export default function MoviesPage() {
                       {item.notes}
                     </p>
                   )}
-                  <button
-                    onClick={() => handleShare("item", item.id)}
-                    className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 bg-white rounded-full p-2 hover:bg-turquoise-50 transition-opacity"
-                  >
-                    <Share2 className="w-4 h-4 text-turquoise-600" />
-                  </button>
+                  <div className="absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <button
+                      onClick={() => handleShare("item", item.id)}
+                      className="bg-white rounded-full p-2 hover:bg-turquoise-50"
+                    >
+                      <Share2 className="w-4 h-4 text-turquoise-600" />
+                    </button>
+                    <button
+                      onClick={() => deleteItem(item.id)}
+                      className="bg-white rounded-full p-2 hover:bg-red-50"
+                    >
+                      <Trash2 className="w-4 h-4 text-red-500" />
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>
