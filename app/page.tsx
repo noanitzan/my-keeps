@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Image as ImageIcon, Quote, BookOpen } from "lucide-react";
+import { Image as ImageIcon, Quote, BookOpen, Palette, Film } from "lucide-react";
 
 export default function Home() {
   return (
@@ -16,7 +16,7 @@ export default function Home() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           <Link
             href="/images"
             className="group bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2"
@@ -64,6 +64,40 @@ export default function Home() {
               </h2>
               <p className="text-turquoise-600">
                 Collect beautiful poems and verses
+              </p>
+            </div>
+          </Link>
+
+          <Link
+            href="/galleries"
+            className="group bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2"
+          >
+            <div className="flex flex-col items-center text-center">
+              <div className="bg-turquoise-100 rounded-full p-6 mb-4 group-hover:bg-turquoise-200 transition-colors">
+                <Palette className="w-12 h-12 text-turquoise-600" />
+              </div>
+              <h2 className="text-2xl font-semibold text-turquoise-800 mb-2">
+                Galleries & Exhibitions
+              </h2>
+              <p className="text-turquoise-600">
+                Track art shows and exhibitions you love
+              </p>
+            </div>
+          </Link>
+
+          <Link
+            href="/movies"
+            className="group bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2"
+          >
+            <div className="flex flex-col items-center text-center">
+              <div className="bg-turquoise-100 rounded-full p-6 mb-4 group-hover:bg-turquoise-200 transition-colors">
+                <Film className="w-12 h-12 text-turquoise-600" />
+              </div>
+              <h2 className="text-2xl font-semibold text-turquoise-800 mb-2">
+                Movies
+              </h2>
+              <p className="text-turquoise-600">
+                Keep track of your favorite films
               </p>
             </div>
           </Link>
