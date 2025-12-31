@@ -146,7 +146,7 @@ export default function ImagesPage() {
       <div className="max-w-7xl mx-auto">
         <Link
           href="/"
-          className="inline-flex items-center text-turquoise-700 hover:text-turquoise-800 mb-6"
+          className="inline-flex items-center text-turquoise-950 hover:text-turquoise-950 mb-6"
         >
           <ArrowLeft className="w-5 h-5 mr-2" />
           Back to Home
@@ -155,11 +155,11 @@ export default function ImagesPage() {
         <div className="bg-white rounded-2xl shadow-lg p-8">
           <div className="flex items-center justify-between mb-8">
             <div>
-              <h1 className="text-4xl font-bold text-turquoise-800 mb-2">Images</h1>
+              <h1 className="text-4xl font-bold text-turquoise-950 mb-2">Images</h1>
               {currentFolder && (
                 <button
                   onClick={() => setCurrentFolder(null)}
-                  className="text-sm text-turquoise-600 hover:text-turquoise-700"
+                  className="text-sm text-turquoise-900 hover:text-turquoise-950"
                 >
                   ← Back to all images
                 </button>
@@ -168,14 +168,14 @@ export default function ImagesPage() {
             <div className="flex gap-3">
               <button
                 onClick={() => setShowFolderModal(true)}
-                className="flex items-center gap-2 bg-turquoise-100 text-turquoise-700 px-4 py-2 rounded-lg hover:bg-turquoise-200 transition-colors"
+                className="flex items-center gap-2 bg-turquoise-100 text-turquoise-950 px-4 py-2 rounded-lg hover:bg-turquoise-200 transition-colors"
               >
                 <FolderPlus className="w-5 h-5" />
                 New Folder
               </button>
               <button
                 onClick={() => setShowUrlModal(true)}
-                className="flex items-center gap-2 bg-turquoise-100 text-turquoise-700 px-4 py-2 rounded-lg hover:bg-turquoise-200 transition-colors"
+                className="flex items-center gap-2 bg-turquoise-100 text-turquoise-950 px-4 py-2 rounded-lg hover:bg-turquoise-200 transition-colors"
               >
                 <Link2 className="w-5 h-5" />
                 URL
@@ -202,8 +202,8 @@ export default function ImagesPage() {
                   className="group relative bg-turquoise-50 rounded-xl p-4 hover:bg-turquoise-100 transition-colors cursor-pointer"
                   onClick={() => setCurrentFolder(folder.id)}
                 >
-                  <Folder className="w-12 h-12 text-turquoise-600 mx-auto mb-2" />
-                  <p className="text-center text-sm font-medium text-turquoise-800 truncate">
+                  <Folder className="w-12 h-12 text-turquoise-900 mx-auto mb-2" />
+                  <p className="text-center text-sm font-medium text-turquoise-950 truncate">
                     {folder.name}
                   </p>
                   <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -214,7 +214,7 @@ export default function ImagesPage() {
                       }}
                       className="p-1 bg-white rounded hover:bg-turquoise-50"
                     >
-                      <Share2 className="w-4 h-4 text-turquoise-600" />
+                      <Share2 className="w-4 h-4 text-turquoise-900" />
                     </button>
                     <button
                       onClick={(e) => {
@@ -248,7 +248,7 @@ export default function ImagesPage() {
                       onClick={() => handleShare("item", item.id)}
                       className="opacity-0 group-hover:opacity-100 bg-white rounded-full p-2 hover:bg-turquoise-50 transition-opacity"
                     >
-                      <Share2 className="w-5 h-5 text-turquoise-600" />
+                      <Share2 className="w-5 h-5 text-turquoise-900" />
                     </button>
                     <button
                       onClick={() => deleteItem(item.id)}
@@ -263,7 +263,7 @@ export default function ImagesPage() {
           ) : (
             <div className="text-center py-16">
               <ImageIcon className="w-16 h-16 text-turquoise-300 mx-auto mb-4" />
-              <p className="text-turquoise-600">No images yet. Upload some to get started!</p>
+              <p className="text-turquoise-900">No images yet. Upload some to get started!</p>
             </div>
           )}
         </div>
@@ -272,7 +272,7 @@ export default function ImagesPage() {
       {showFolderModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-2xl p-6 w-full max-w-md">
-            <h3 className="text-2xl font-bold text-turquoise-800 mb-4">Create Folder</h3>
+            <h3 className="text-2xl font-bold text-turquoise-950 mb-4">Create Folder</h3>
             <input
               type="text"
               value={newFolderName}
@@ -305,8 +305,8 @@ export default function ImagesPage() {
       {showUrlModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-2xl p-6 w-full max-w-md">
-            <h3 className="text-2xl font-bold text-turquoise-800 mb-4">Add from URL</h3>
-            <p className="text-sm text-turquoise-600 mb-4">
+            <h3 className="text-2xl font-bold text-turquoise-950 mb-4">Add from URL</h3>
+            <p className="text-sm text-turquoise-900 mb-4">
               Paste an image URL or Google Drive sharing link
             </p>
             <input
@@ -342,12 +342,12 @@ export default function ImagesPage() {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-2xl p-6 max-w-md">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-xl font-bold text-turquoise-800">Shared!</h3>
+              <h3 className="text-xl font-bold text-turquoise-950">Shared!</h3>
               <button onClick={() => setShareModal(null)}>
                 <X className="w-5 h-5 text-gray-500" />
               </button>
             </div>
-            <p className="text-turquoise-600">Link copied to clipboard!</p>
+            <p className="text-turquoise-900">Link copied to clipboard!</p>
           </div>
         </div>
       )}

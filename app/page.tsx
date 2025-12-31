@@ -8,10 +8,10 @@ export default function Home() {
     <div className="min-h-screen p-8">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
-          <h1 className="text-6xl font-bold text-turquoise-800 mb-4">
+          <h1 className="text-6xl font-bold text-turquoise-950 mb-4">
             My Keeps
           </h1>
-          <p className="text-xl text-turquoise-600">
+          <p className="text-xl text-turquoise-900">
             Collect and organize the things that bring you joy
           </p>
         </div>
@@ -23,12 +23,12 @@ export default function Home() {
           >
             <div className="flex flex-col items-center text-center">
               <div className="bg-turquoise-100 rounded-full p-6 mb-4 group-hover:bg-turquoise-200 transition-colors">
-                <ImageIcon className="w-12 h-12 text-turquoise-600" />
+                <ImageIcon className="w-12 h-12 text-turquoise-900" />
               </div>
-              <h2 className="text-2xl font-semibold text-turquoise-800 mb-2">
+              <h2 className="text-2xl font-semibold text-turquoise-950 mb-2">
                 Images
               </h2>
-              <p className="text-turquoise-600">
+              <p className="text-turquoise-900">
                 Upload and organize your favorite images
               </p>
             </div>
@@ -40,12 +40,12 @@ export default function Home() {
           >
             <div className="flex flex-col items-center text-center">
               <div className="bg-turquoise-100 rounded-full p-6 mb-4 group-hover:bg-turquoise-200 transition-colors">
-                <Quote className="w-12 h-12 text-turquoise-600" />
+                <Quote className="w-12 h-12 text-turquoise-900" />
               </div>
-              <h2 className="text-2xl font-semibold text-turquoise-800 mb-2">
+              <h2 className="text-2xl font-semibold text-turquoise-950 mb-2">
                 Quotes
               </h2>
-              <p className="text-turquoise-600">
+              <p className="text-turquoise-900">
                 Save and share inspiring quotes
               </p>
             </div>
@@ -57,12 +57,12 @@ export default function Home() {
           >
             <div className="flex flex-col items-center text-center">
               <div className="bg-turquoise-100 rounded-full p-6 mb-4 group-hover:bg-turquoise-200 transition-colors">
-                <BookOpen className="w-12 h-12 text-turquoise-600" />
+                <BookOpen className="w-12 h-12 text-turquoise-900" />
               </div>
-              <h2 className="text-2xl font-semibold text-turquoise-800 mb-2">
+              <h2 className="text-2xl font-semibold text-turquoise-950 mb-2">
                 Poems
               </h2>
-              <p className="text-turquoise-600">
+              <p className="text-turquoise-900">
                 Collect beautiful poems and verses
               </p>
             </div>
@@ -74,12 +74,12 @@ export default function Home() {
           >
             <div className="flex flex-col items-center text-center">
               <div className="bg-turquoise-100 rounded-full p-6 mb-4 group-hover:bg-turquoise-200 transition-colors">
-                <Palette className="w-12 h-12 text-turquoise-600" />
+                <Palette className="w-12 h-12 text-turquoise-900" />
               </div>
-              <h2 className="text-2xl font-semibold text-turquoise-800 mb-2">
+              <h2 className="text-2xl font-semibold text-turquoise-950 mb-2">
                 Galleries & Exhibitions
               </h2>
-              <p className="text-turquoise-600">
+              <p className="text-turquoise-900">
                 Track art shows and exhibitions you love
               </p>
             </div>
@@ -91,12 +91,12 @@ export default function Home() {
           >
             <div className="flex flex-col items-center text-center">
               <div className="bg-turquoise-100 rounded-full p-6 mb-4 group-hover:bg-turquoise-200 transition-colors">
-                <Film className="w-12 h-12 text-turquoise-600" />
+                <Film className="w-12 h-12 text-turquoise-900" />
               </div>
-              <h2 className="text-2xl font-semibold text-turquoise-800 mb-2">
+              <h2 className="text-2xl font-semibold text-turquoise-950 mb-2">
                 Movies
               </h2>
-              <p className="text-turquoise-600">
+              <p className="text-turquoise-900">
                 Keep track of your favorite films
               </p>
             </div>

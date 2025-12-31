@@ -125,7 +125,7 @@ export default function MoviesPage() {
       <div className="max-w-7xl mx-auto">
         <Link
           href="/"
-          className="inline-flex items-center text-turquoise-700 hover:text-turquoise-800 mb-6"
+          className="inline-flex items-center text-turquoise-950 hover:text-turquoise-950 mb-6"
         >
           <ArrowLeft className="w-5 h-5 mr-2" />
           Back to Home
@@ -134,11 +134,11 @@ export default function MoviesPage() {
         <div className="bg-white rounded-2xl shadow-lg p-8">
           <div className="flex items-center justify-between mb-8">
             <div>
-              <h1 className="text-4xl font-bold text-turquoise-800 mb-2">Movies</h1>
+              <h1 className="text-4xl font-bold text-turquoise-950 mb-2">Movies</h1>
               {currentFolder && (
                 <button
                   onClick={() => setCurrentFolder(null)}
-                  className="text-sm text-turquoise-600 hover:text-turquoise-700"
+                  className="text-sm text-turquoise-900 hover:text-turquoise-950"
                 >
                   ← Back to all movies
                 </button>
@@ -147,7 +147,7 @@ export default function MoviesPage() {
             <div className="flex gap-3">
               <button
                 onClick={() => setShowFolderModal(true)}
-                className="flex items-center gap-2 bg-turquoise-100 text-turquoise-700 px-4 py-2 rounded-lg hover:bg-turquoise-200 transition-colors"
+                className="flex items-center gap-2 bg-turquoise-100 text-turquoise-950 px-4 py-2 rounded-lg hover:bg-turquoise-200 transition-colors"
               >
                 <FolderPlus className="w-5 h-5" />
                 New Folder
@@ -170,8 +170,8 @@ export default function MoviesPage() {
                   className="group relative bg-turquoise-50 rounded-xl p-4 hover:bg-turquoise-100 transition-colors cursor-pointer"
                   onClick={() => setCurrentFolder(folder.id)}
                 >
-                  <Folder className="w-12 h-12 text-turquoise-600 mx-auto mb-2" />
-                  <p className="text-center text-sm font-medium text-turquoise-800 truncate">
+                  <Folder className="w-12 h-12 text-turquoise-900 mx-auto mb-2" />
+                  <p className="text-center text-sm font-medium text-turquoise-950 truncate">
                     {folder.name}
                   </p>
                   <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -182,7 +182,7 @@ export default function MoviesPage() {
                       }}
                       className="p-1 bg-white rounded hover:bg-turquoise-50"
                     >
-                      <Share2 className="w-4 h-4 text-turquoise-600" />
+                      <Share2 className="w-4 h-4 text-turquoise-900" />
                     </button>
                     <button
                       onClick={(e) => {
@@ -207,12 +207,12 @@ export default function MoviesPage() {
                   className="group relative bg-gradient-to-br from-turquoise-50 to-turquoise-100 rounded-xl p-6 border-2 border-turquoise-200 hover:border-turquoise-300 transition-all"
                 >
                   <Film className="w-8 h-8 text-turquoise-400 mb-4" />
-                  <h3 className="text-xl font-bold text-turquoise-800 mb-2">
+                  <h3 className="text-xl font-bold text-turquoise-950 mb-2">
                     {item.title}
-                    {item.year && <span className="font-normal text-turquoise-600"> ({item.year})</span>}
+                    {item.year && <span className="font-normal text-turquoise-900"> ({item.year})</span>}
                   </h3>
                   {item.director && (
-                    <p className="text-sm text-turquoise-700 mb-2">
+                    <p className="text-sm text-turquoise-950 mb-2">
                       Directed by {item.director}
                     </p>
                   )}
@@ -222,7 +222,7 @@ export default function MoviesPage() {
                     </div>
                   )}
                   {item.notes && (
-                    <p className="text-turquoise-600 mt-3 text-sm">
+                    <p className="text-turquoise-900 mt-3 text-sm">
                       {item.notes}
                     </p>
                   )}
@@ -231,7 +231,7 @@ export default function MoviesPage() {
                       onClick={() => handleShare("item", item.id)}
                       className="bg-white rounded-full p-2 hover:bg-turquoise-50"
                     >
-                      <Share2 className="w-4 h-4 text-turquoise-600" />
+                      <Share2 className="w-4 h-4 text-turquoise-900" />
                     </button>
                     <button
                       onClick={() => deleteItem(item.id)}
@@ -246,7 +246,7 @@ export default function MoviesPage() {
           ) : (
             <div className="text-center py-16">
               <Film className="w-16 h-16 text-turquoise-300 mx-auto mb-4" />
-              <p className="text-turquoise-600">No movies yet. Add some to get started!</p>
+              <p className="text-turquoise-900">No movies yet. Add some to get started!</p>
             </div>
           )}
         </div>
@@ -255,7 +255,7 @@ export default function MoviesPage() {
       {showAddModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-2xl p-6 w-full max-w-md">
-            <h3 className="text-2xl font-bold text-turquoise-800 mb-4">Add Movie</h3>
+            <h3 className="text-2xl font-bold text-turquoise-950 mb-4">Add Movie</h3>
             <input
               type="text"
               value={newItem.title}
@@ -278,7 +278,7 @@ export default function MoviesPage() {
               className="w-full px-4 py-2 border border-turquoise-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-turquoise-500 mb-4"
             />
             <div className="mb-4">
-              <label className="block text-sm text-turquoise-700 mb-2">Rating (optional)</label>
+              <label className="block text-sm text-turquoise-950 mb-2">Rating (optional)</label>
               <div className="flex gap-2">
                 {[1, 2, 3, 4, 5].map((star) => (
                   <button
@@ -324,7 +324,7 @@ export default function MoviesPage() {
       {showFolderModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-2xl p-6 w-full max-w-md">
-            <h3 className="text-2xl font-bold text-turquoise-800 mb-4">Create Folder</h3>
+            <h3 className="text-2xl font-bold text-turquoise-950 mb-4">Create Folder</h3>
             <input
               type="text"
               value={newFolderName}
@@ -358,12 +358,12 @@ export default function MoviesPage() {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-2xl p-6 max-w-md">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-xl font-bold text-turquoise-800">Shared!</h3>
+              <h3 className="text-xl font-bold text-turquoise-950">Shared!</h3>
               <button onClick={() => setShareModal(null)}>
                 <X className="w-5 h-5 text-gray-500" />
               </button>
             </div>
-            <p className="text-turquoise-600">Link copied to clipboard!</p>
+            <p className="text-turquoise-900">Link copied to clipboard!</p>
           </div>
         </div>
       )}
