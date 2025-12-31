@@ -134,12 +134,16 @@ export default function ImagesPage() {
   };
 
   const deleteItem = (id: string) => {
-    setItems(prev => prev.filter(item => item.id !== id));
+    if (window.confirm("Are you sure you want to delete this item?")) {
+      setItems(prev => prev.filter(item => item.id !== id));
+    }
   };
 
   const deleteFolder = (id: string) => {
-    setFolders(prev => prev.filter(folder => folder.id !== id));
-    setItems(prev => prev.filter(item => item.folderId !== id));
+    if (window.confirm("Are you sure you want to delete this folder and all its contents?")) {
+      setFolders(prev => prev.filter(folder => folder.id !== id));
+      setItems(prev => prev.filter(item => item.folderId !== id));
+    }
   };
 
   return (
