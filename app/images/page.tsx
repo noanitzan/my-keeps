@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { ArrowLeft, Upload, FolderPlus, Share2, Folder, Image as ImageIcon, X } from "lucide-react";
 
@@ -16,9 +16,44 @@ interface Folder {
   name: string;
 }
 
+const STORAGE_KEY_IMAGES = "little-joys-images";
+const STORAGE_KEY_FOLDERS = "little-joys-folders";
+
 export default function ImagesPage() {
   const [items, setItems] = useState<ImageItem[]>([]);
   const [folders, setFolders] = useState<Folder[]>([]);
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  // Load from localStorage on mount
+  useEffect(() => {
+    try {
+      const savedImages = localStorage.getItem(STORAGE_KEY_IMAGES);
+      const savedFolders = localStorage.getItem(STORAGE_KEY_FOLDERS);
+      if (savedImages) setItems(JSON.parse(savedImages));
+      if (savedFolders) setFolders(JSON.parse(savedFolders));
+    } catch (e) {
+      console.error("Failed to load from localStorage", e);
+    }
+    setIsLoaded(true);
+  }, []);
+
+  // Save images to localStorage whenever they change
+  useEffect(() => {
+    if (isLoaded) {
+      try {
+        localStorage.setItem(STORAGE_KEY_IMAGES, JSON.stringify(items));
+      } catch (e) {
+        console.error("Failed to save images - storage may be full", e);
+      }
+    }
+  }, [items, isLoaded]);
+
+  // Save folders to localStorage whenever they change
+  useEffect(() => {
+    if (isLoaded) {
+      localStorage.setItem(STORAGE_KEY_FOLDERS, JSON.stringify(folders));
+    }
+  }, [folders, isLoaded]);
   const [currentFolder, setCurrentFolder] = useState<string | null>(null);
   const [showUpload, setShowUpload] = useState(false);
   const [showFolderModal, setShowFolderModal] = useState(false);
@@ -38,7 +73,7 @@ export default function ImagesPage() {
           url: event.target?.result as string,
           folderId: currentFolder || undefined,
         };
-        setItems([...items, newItem]);
+        setItems(prev => [...prev, newItem]);
       };
       reader.readAsDataURL(file);
     });
