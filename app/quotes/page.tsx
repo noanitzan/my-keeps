@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { ArrowLeft, Upload, FolderPlus, Share2, Folder, Quote, X, Trash2 } from "lucide-react";
+import { ArrowLeft, Upload, FolderPlus, Share2, Folder, Quote, X, Trash2, Link2 } from "lucide-react";
 
 interface QuoteItem {
   id: string;
@@ -25,7 +25,9 @@ export default function QuotesPage() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [currentFolder, setCurrentFolder] = useState<string | null>(null);
   const [showFolderModal, setShowFolderModal] = useState(false);
+  const [showUrlModal, setShowUrlModal] = useState(false);
   const [newFolderName, setNewFolderName] = useState("");
+  const [newImageUrl, setNewImageUrl] = useState("");
   const [shareModal, setShareModal] = useState<{ type: "item" | "folder"; id: string } | null>(null);
 
   // Load from localStorage on mount
@@ -75,6 +77,32 @@ export default function QuotesPage() {
       };
       reader.readAsDataURL(file);
     });
+  };
+
+  const convertGoogleDriveUrl = (url: string): string => {
+    const driveMatch = url.match(/drive\.google\.com\/file\/d\/([^/]+)/);
+    if (driveMatch) {
+      return `https://drive.google.com/uc?export=view&id=${driveMatch[1]}`;
+    }
+    const openMatch = url.match(/drive\.google\.com\/open\?id=([^&]+)/);
+    if (openMatch) {
+      return `https://drive.google.com/uc?export=view&id=${openMatch[1]}`;
+    }
+    return url;
+  };
+
+  const addFromUrl = () => {
+    if (!newImageUrl.trim()) return;
+    const finalUrl = convertGoogleDriveUrl(newImageUrl.trim());
+    const newItem: QuoteItem = {
+      id: Date.now().toString() + Math.random(),
+      name: "Image from URL",
+      url: finalUrl,
+      folderId: currentFolder || undefined,
+    };
+    setItems(prev => [...prev, newItem]);
+    setNewImageUrl("");
+    setShowUrlModal(false);
   };
 
   const createFolder = () => {
@@ -140,6 +168,13 @@ export default function QuotesPage() {
               >
                 <FolderPlus className="w-5 h-5" />
                 New Folder
+              </button>
+              <button
+                onClick={() => setShowUrlModal(true)}
+                className="flex items-center gap-2 bg-turquoise-100 text-turquoise-700 px-4 py-2 rounded-lg hover:bg-turquoise-200 transition-colors"
+              >
+                <Link2 className="w-5 h-5" />
+                URL
               </button>
               <label className="flex items-center gap-2 bg-turquoise-600 text-white px-4 py-2 rounded-lg hover:bg-turquoise-700 transition-colors cursor-pointer">
                 <Upload className="w-5 h-5" />
@@ -253,6 +288,42 @@ export default function QuotesPage() {
                 onClick={() => {
                   setShowFolderModal(false);
                   setNewFolderName("");
+                }}
+                className="flex-1 bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showUrlModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-2xl p-6 w-full max-w-md">
+            <h3 className="text-2xl font-bold text-turquoise-800 mb-4">Add from URL</h3>
+            <p className="text-sm text-turquoise-600 mb-4">
+              Paste an image URL or Google Drive sharing link
+            </p>
+            <input
+              type="text"
+              value={newImageUrl}
+              onChange={(e) => setNewImageUrl(e.target.value)}
+              placeholder="https://..."
+              className="w-full px-4 py-2 border border-turquoise-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-turquoise-500 mb-4"
+              onKeyPress={(e) => e.key === "Enter" && addFromUrl()}
+            />
+            <div className="flex gap-3">
+              <button
+                onClick={addFromUrl}
+                className="flex-1 bg-turquoise-600 text-white px-4 py-2 rounded-lg hover:bg-turquoise-700"
+              >
+                Add
+              </button>
+              <button
+                onClick={() => {
+                  setShowUrlModal(false);
+                  setNewImageUrl("");
                 }}
                 className="flex-1 bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300"
               >
