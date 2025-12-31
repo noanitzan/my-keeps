@@ -243,18 +243,18 @@ export default function ImagesPage() {
                     alt={item.name}
                     className="w-full h-full object-cover"
                   />
-                  <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition-all flex items-center justify-center gap-2">
+                  <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                     <button
                       onClick={() => handleShare("item", item.id)}
-                      className="opacity-0 group-hover:opacity-100 bg-white rounded-full p-2 hover:bg-turquoise-50 transition-opacity"
+                      className="bg-white rounded-full p-2 hover:bg-turquoise-50 shadow-md"
                     >
-                      <Share2 className="w-5 h-5 text-turquoise-900" />
+                      <Share2 className="w-4 h-4 text-turquoise-900" />
                     </button>
                     <button
                       onClick={() => deleteItem(item.id)}
-                      className="opacity-0 group-hover:opacity-100 bg-white rounded-full p-2 hover:bg-red-50 transition-opacity"
+                      className="bg-white rounded-full p-2 hover:bg-red-50 shadow-md"
                     >
-                      <Trash2 className="w-5 h-5 text-red-500" />
+                      <Trash2 className="w-4 h-4 text-red-500" />
                     </button>
                   </div>
                 </div>
