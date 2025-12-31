@@ -61,6 +61,7 @@ export default function ImagesPage() {
   const [newFolderName, setNewFolderName] = useState("");
   const [newImageUrl, setNewImageUrl] = useState("");
   const [shareModal, setShareModal] = useState<{ type: "item" | "folder"; id: string } | null>(null);
+  const [viewImage, setViewImage] = useState<ImageItem | null>(null);
 
   const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -236,7 +237,8 @@ export default function ImagesPage() {
               {currentItems.map((item) => (
                 <div
                   key={item.id}
-                  className="group relative bg-gray-100 rounded-xl overflow-hidden aspect-square"
+                  className="group relative bg-gray-100 rounded-xl overflow-hidden aspect-square cursor-pointer"
+                  onClick={() => setViewImage(item)}
                 >
                   <img
                     src={item.url}
@@ -245,13 +247,13 @@ export default function ImagesPage() {
                   />
                   <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                     <button
-                      onClick={() => handleShare("item", item.id)}
+                      onClick={(e) => { e.stopPropagation(); handleShare("item", item.id); }}
                       className="bg-white rounded-full p-2 hover:bg-turquoise-50 shadow-md"
                     >
                       <Share2 className="w-4 h-4 text-turquoise-900" />
                     </button>
                     <button
-                      onClick={() => deleteItem(item.id)}
+                      onClick={(e) => { e.stopPropagation(); deleteItem(item.id); }}
                       className="bg-white rounded-full p-2 hover:bg-red-50 shadow-md"
                     >
                       <Trash2 className="w-4 h-4 text-red-500" />
@@ -349,6 +351,26 @@ export default function ImagesPage() {
             </div>
             <p className="text-turquoise-900">Link copied to clipboard!</p>
           </div>
+        </div>
+      )}
+
+      {viewImage && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50 p-4"
+          onClick={() => setViewImage(null)}
+        >
+          <button 
+            className="absolute top-4 right-4 bg-white rounded-full p-2 hover:bg-gray-100"
+            onClick={() => setViewImage(null)}
+          >
+            <X className="w-6 h-6 text-gray-700" />
+          </button>
+          <img
+            src={viewImage.url}
+            alt={viewImage.name}
+            className="max-w-full max-h-full object-contain rounded-lg"
+            onClick={(e) => e.stopPropagation()}
+          />
         </div>
       )}
     </div>
