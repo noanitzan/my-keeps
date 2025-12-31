@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Image, Quote, BookOpen } from "lucide-react";
+import { Image as ImageIcon, Quote, BookOpen } from "lucide-react";
 
 export default function Home() {
   return (
@@ -23,7 +23,7 @@ export default function Home() {
           >
             <div className="flex flex-col items-center text-center">
               <div className="bg-turquoise-100 rounded-full p-6 mb-4 group-hover:bg-turquoise-200 transition-colors">
-                <Image className="w-12 h-12 text-turquoise-600" />
+                <ImageIcon className="w-12 h-12 text-turquoise-600" />
               </div>
               <h2 className="text-2xl font-semibold text-turquoise-800 mb-2">
                 Images

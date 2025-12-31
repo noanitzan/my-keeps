@@ -139,7 +139,7 @@ export default function QuotesPage() {
                 >
                   <Quote className="w-8 h-8 text-turquoise-400 mb-4" />
                   <p className="text-lg text-turquoise-900 mb-3 italic">
-                    "{item.text}"
+                    &ldquo;{item.text}&rdquo;
                   </p>
                   {item.author && (
                     <p className="text-sm text-turquoise-700 font-medium">
