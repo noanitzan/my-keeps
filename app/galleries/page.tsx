@@ -2,13 +2,14 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { ArrowLeft, Plus, FolderPlus, Share2, Folder, Palette, X, Trash2 } from "lucide-react";
+import { ArrowLeft, Plus, FolderPlus, Share2, Folder, Palette, X, Trash2, ExternalLink } from "lucide-react";
 
 interface GalleryItem {
   id: string;
   name: string;
   location?: string;
   date?: string;
+  website?: string;
   notes?: string;
   folderId?: string;
 }
@@ -29,7 +30,7 @@ export default function GalleriesPage() {
   const [showAddModal, setShowAddModal] = useState(false);
   const [showFolderModal, setShowFolderModal] = useState(false);
   const [newFolderName, setNewFolderName] = useState("");
-  const [newItem, setNewItem] = useState({ name: "", location: "", date: "", notes: "" });
+  const [newItem, setNewItem] = useState({ name: "", location: "", date: "", website: "", notes: "" });
   const [shareModal, setShareModal] = useState<{ type: "item" | "folder"; id: string } | null>(null);
 
   // Load from localStorage on mount
@@ -65,11 +66,12 @@ export default function GalleriesPage() {
       name: newItem.name,
       location: newItem.location || undefined,
       date: newItem.date || undefined,
+      website: newItem.website || undefined,
       notes: newItem.notes || undefined,
       folderId: currentFolder || undefined,
     };
     setItems(prev => [...prev, item]);
-    setNewItem({ name: "", location: "", date: "", notes: "" });
+    setNewItem({ name: "", location: "", date: "", website: "", notes: "" });
     setShowAddModal(false);
   };
 
@@ -205,6 +207,18 @@ export default function GalleriesPage() {
                       📅 {item.date}
                     </p>
                   )}
+                  {item.website && (
+                    <a 
+                      href={item.website.startsWith('http') ? item.website : `https://${item.website}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 text-sm text-turquoise-700 hover:text-turquoise-900 mb-1"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <ExternalLink className="w-3 h-3" />
+                      Visit Website
+                    </a>
+                  )}
                   {item.notes && (
                     <p className="text-turquoise-900 mt-3 text-sm">
                       {item.notes}
@@ -261,6 +275,13 @@ export default function GalleriesPage() {
               placeholder="Date (optional)"
               className="w-full px-4 py-2 border border-turquoise-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-turquoise-500 mb-4"
             />
+            <input
+              type="text"
+              value={newItem.website}
+              onChange={(e) => setNewItem({ ...newItem, website: e.target.value })}
+              placeholder="Website URL (optional)"
+              className="w-full px-4 py-2 border border-turquoise-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-turquoise-500 mb-4"
+            />
             <textarea
               value={newItem.notes}
               onChange={(e) => setNewItem({ ...newItem, notes: e.target.value })}
@@ -277,7 +298,7 @@ export default function GalleriesPage() {
               <button
                 onClick={() => {
                   setShowAddModal(false);
-                  setNewItem({ name: "", location: "", date: "", notes: "" });
+                  setNewItem({ name: "", location: "", date: "", website: "", notes: "" });
                 }}
                 className="flex-1 bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300"
               >
