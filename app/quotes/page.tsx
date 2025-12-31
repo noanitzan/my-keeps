@@ -2,27 +2,31 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { ArrowLeft, Plus, FolderPlus, Share2, Folder, Quote, X, Trash2 } from "lucide-react";
+import { ArrowLeft, Upload, FolderPlus, Share2, Folder, Quote, X, Trash2 } from "lucide-react";
 
 interface QuoteItem {
   id: string;
-  text: string;
-  author?: string;
+  name: string;
+  url: string;
   folderId?: string;
 }
 
-interface Folder {
+interface FolderType {
   id: string;
   name: string;
 }
 
-const STORAGE_KEY_QUOTES = "little-joys-quotes";
+const STORAGE_KEY_QUOTES = "little-joys-quotes-images";
 const STORAGE_KEY_FOLDERS = "little-joys-quotes-folders";
 
 export default function QuotesPage() {
   const [items, setItems] = useState<QuoteItem[]>([]);
-  const [folders, setFolders] = useState<Folder[]>([]);
+  const [folders, setFolders] = useState<FolderType[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [currentFolder, setCurrentFolder] = useState<string | null>(null);
+  const [showFolderModal, setShowFolderModal] = useState(false);
+  const [newFolderName, setNewFolderName] = useState("");
+  const [shareModal, setShareModal] = useState<{ type: "item" | "folder"; id: string } | null>(null);
 
   // Load from localStorage on mount
   useEffect(() => {
@@ -37,42 +41,45 @@ export default function QuotesPage() {
     setIsLoaded(true);
   }, []);
 
-  // Save quotes to localStorage whenever they change
+  // Save to localStorage whenever they change
   useEffect(() => {
     if (isLoaded) {
-      localStorage.setItem(STORAGE_KEY_QUOTES, JSON.stringify(items));
+      try {
+        localStorage.setItem(STORAGE_KEY_QUOTES, JSON.stringify(items));
+      } catch (e) {
+        console.error("Failed to save - storage may be full", e);
+      }
     }
   }, [items, isLoaded]);
 
-  // Save folders to localStorage whenever they change
   useEffect(() => {
     if (isLoaded) {
       localStorage.setItem(STORAGE_KEY_FOLDERS, JSON.stringify(folders));
     }
   }, [folders, isLoaded]);
-  const [currentFolder, setCurrentFolder] = useState<string | null>(null);
-  const [showAddModal, setShowAddModal] = useState(false);
-  const [showFolderModal, setShowFolderModal] = useState(false);
-  const [newFolderName, setNewFolderName] = useState("");
-  const [newQuote, setNewQuote] = useState({ text: "", author: "" });
-  const [shareModal, setShareModal] = useState<{ type: "item" | "folder"; id: string } | null>(null);
 
-  const addQuote = () => {
-    if (!newQuote.text.trim()) return;
-    const newItem: QuoteItem = {
-      id: Date.now().toString(),
-      text: newQuote.text,
-      author: newQuote.author || undefined,
-      folderId: currentFolder || undefined,
-    };
-    setItems(prev => [...prev, newItem]);
-    setNewQuote({ text: "", author: "" });
-    setShowAddModal(false);
+  const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files) return;
+
+    Array.from(files).forEach((file) => {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const newItem: QuoteItem = {
+          id: Date.now().toString() + Math.random(),
+          name: file.name,
+          url: event.target?.result as string,
+          folderId: currentFolder || undefined,
+        };
+        setItems(prev => [...prev, newItem]);
+      };
+      reader.readAsDataURL(file);
+    });
   };
 
   const createFolder = () => {
     if (!newFolderName.trim()) return;
-    const newFolder: Folder = {
+    const newFolder: FolderType = {
       id: Date.now().toString(),
       name: newFolderName,
     };
@@ -84,7 +91,7 @@ export default function QuotesPage() {
   const currentItems = items.filter((item) => 
     currentFolder ? item.folderId === currentFolder : !item.folderId
   );
-  const currentFolders = folders.filter((f) => !currentFolder);
+  const currentFolders = folders.filter(() => !currentFolder);
 
   const handleShare = (type: "item" | "folder", id: string) => {
     setShareModal({ type, id });
@@ -134,13 +141,17 @@ export default function QuotesPage() {
                 <FolderPlus className="w-5 h-5" />
                 New Folder
               </button>
-              <button
-                onClick={() => setShowAddModal(true)}
-                className="flex items-center gap-2 bg-turquoise-600 text-white px-4 py-2 rounded-lg hover:bg-turquoise-700 transition-colors"
-              >
-                <Plus className="w-5 h-5" />
-                Add Quote
-              </button>
+              <label className="flex items-center gap-2 bg-turquoise-600 text-white px-4 py-2 rounded-lg hover:bg-turquoise-700 transition-colors cursor-pointer">
+                <Upload className="w-5 h-5" />
+                Upload
+                <input
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  onChange={handleUpload}
+                  className="hidden"
+                />
+              </label>
             </div>
           </div>
 
@@ -182,33 +193,29 @@ export default function QuotesPage() {
           )}
 
           {currentItems.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {currentItems.map((item) => (
                 <div
                   key={item.id}
-                  className="group relative bg-gradient-to-br from-turquoise-50 to-turquoise-100 rounded-xl p-6 border-2 border-turquoise-200 hover:border-turquoise-300 transition-all"
+                  className="group relative bg-gray-100 rounded-xl overflow-hidden aspect-square"
                 >
-                  <Quote className="w-8 h-8 text-turquoise-400 mb-4" />
-                  <p className="text-lg text-turquoise-900 mb-3 italic">
-                    &ldquo;{item.text}&rdquo;
-                  </p>
-                  {item.author && (
-                    <p className="text-sm text-turquoise-700 font-medium">
-                      — {item.author}
-                    </p>
-                  )}
-                  <div className="absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <img
+                    src={item.url}
+                    alt={item.name}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition-all flex items-center justify-center gap-2">
                     <button
                       onClick={() => handleShare("item", item.id)}
-                      className="bg-white rounded-full p-2 hover:bg-turquoise-50"
+                      className="opacity-0 group-hover:opacity-100 bg-white rounded-full p-2 hover:bg-turquoise-50 transition-opacity"
                     >
-                      <Share2 className="w-4 h-4 text-turquoise-600" />
+                      <Share2 className="w-5 h-5 text-turquoise-600" />
                     </button>
                     <button
                       onClick={() => deleteItem(item.id)}
-                      className="bg-white rounded-full p-2 hover:bg-red-50"
+                      className="opacity-0 group-hover:opacity-100 bg-white rounded-full p-2 hover:bg-red-50 transition-opacity"
                     >
-                      <Trash2 className="w-4 h-4 text-red-500" />
+                      <Trash2 className="w-5 h-5 text-red-500" />
                     </button>
                   </div>
                 </div>
@@ -217,49 +224,11 @@ export default function QuotesPage() {
           ) : (
             <div className="text-center py-16">
               <Quote className="w-16 h-16 text-turquoise-300 mx-auto mb-4" />
-              <p className="text-turquoise-600">No quotes yet. Add some to get started!</p>
+              <p className="text-turquoise-600">No quotes yet. Upload some images to get started!</p>
             </div>
           )}
         </div>
       </div>
-
-      {showAddModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-2xl p-6 w-full max-w-md">
-            <h3 className="text-2xl font-bold text-turquoise-800 mb-4">Add Quote</h3>
-            <textarea
-              value={newQuote.text}
-              onChange={(e) => setNewQuote({ ...newQuote, text: e.target.value })}
-              placeholder="Quote text"
-              className="w-full px-4 py-2 border border-turquoise-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-turquoise-500 mb-4 min-h-[100px]"
-            />
-            <input
-              type="text"
-              value={newQuote.author}
-              onChange={(e) => setNewQuote({ ...newQuote, author: e.target.value })}
-              placeholder="Author (optional)"
-              className="w-full px-4 py-2 border border-turquoise-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-turquoise-500 mb-4"
-            />
-            <div className="flex gap-3">
-              <button
-                onClick={addQuote}
-                className="flex-1 bg-turquoise-600 text-white px-4 py-2 rounded-lg hover:bg-turquoise-700"
-              >
-                Add
-              </button>
-              <button
-                onClick={() => {
-                  setShowAddModal(false);
-                  setNewQuote({ text: "", author: "" });
-                }}
-                className="flex-1 bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300"
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
 
       {showFolderModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -310,4 +279,3 @@ export default function QuotesPage() {
     </div>
   );
 }
-
