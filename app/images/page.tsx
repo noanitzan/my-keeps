@@ -86,7 +86,7 @@ export default function ImagesPage() {
       id: Date.now().toString(),
       name: newFolderName,
     };
-    setFolders([...folders, newFolder]);
+    setFolders(prev => [...prev, newFolder]);
     setNewFolderName("");
     setShowFolderModal(false);
   };

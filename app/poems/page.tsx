@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { ArrowLeft, Plus, FolderPlus, Share2, Folder, BookOpen, X } from "lucide-react";
 
@@ -17,9 +17,40 @@ interface Folder {
   name: string;
 }
 
+const STORAGE_KEY_POEMS = "little-joys-poems";
+const STORAGE_KEY_FOLDERS = "little-joys-poems-folders";
+
 export default function PoemsPage() {
   const [items, setItems] = useState<PoemItem[]>([]);
   const [folders, setFolders] = useState<Folder[]>([]);
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  // Load from localStorage on mount
+  useEffect(() => {
+    try {
+      const savedItems = localStorage.getItem(STORAGE_KEY_POEMS);
+      const savedFolders = localStorage.getItem(STORAGE_KEY_FOLDERS);
+      if (savedItems) setItems(JSON.parse(savedItems));
+      if (savedFolders) setFolders(JSON.parse(savedFolders));
+    } catch (e) {
+      console.error("Failed to load from localStorage", e);
+    }
+    setIsLoaded(true);
+  }, []);
+
+  // Save poems to localStorage whenever they change
+  useEffect(() => {
+    if (isLoaded) {
+      localStorage.setItem(STORAGE_KEY_POEMS, JSON.stringify(items));
+    }
+  }, [items, isLoaded]);
+
+  // Save folders to localStorage whenever they change
+  useEffect(() => {
+    if (isLoaded) {
+      localStorage.setItem(STORAGE_KEY_FOLDERS, JSON.stringify(folders));
+    }
+  }, [folders, isLoaded]);
   const [currentFolder, setCurrentFolder] = useState<string | null>(null);
   const [showAddModal, setShowAddModal] = useState(false);
   const [showFolderModal, setShowFolderModal] = useState(false);
@@ -36,7 +67,7 @@ export default function PoemsPage() {
       author: newPoem.author || undefined,
       folderId: currentFolder || undefined,
     };
-    setItems([...items, newItem]);
+    setItems(prev => [...prev, newItem]);
     setNewPoem({ title: "", content: "", author: "" });
     setShowAddModal(false);
   };
@@ -47,7 +78,7 @@ export default function PoemsPage() {
       id: Date.now().toString(),
       name: newFolderName,
     };
-    setFolders([...folders, newFolder]);
+    setFolders(prev => [...prev, newFolder]);
     setNewFolderName("");
     setShowFolderModal(false);
   };
